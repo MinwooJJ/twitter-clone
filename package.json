@@ -9,6 +9,7 @@
   "author": "Minwoo Jung",
   "license": "ISC",
   "dependencies": {
-    "next": "^10.2.3"
+    "next": "^10.2.3",
+    "prop-types": "^15.7.2"
   }
 }
