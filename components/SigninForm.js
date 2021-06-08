@@ -1,8 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-function SigninForm() {
+const ButtonWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const SigninWrapper = styled(Form)`
+  padding: 10px;
+`;
+
+function SigninForm({ setIsSignedIn }) {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,8 +24,13 @@ function SigninForm() {
     setPassword(e.target.value);
   }, []);
 
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsSignedIn(true);
+  }, [id, password]);
+
   return (
-    <Form>
+    <SigninWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-id">ID</label>
         <br />
@@ -32,7 +47,7 @@ function SigninForm() {
           required
         />
       </div>
-      <div>
+      <ButtonWrapper>
         <Button type="primary" htmlType="submit" loading={false}>
           Signin
         </Button>
@@ -41,9 +56,13 @@ function SigninForm() {
             <Button>Signup</Button>
           </a>
         </Link>
-      </div>
-    </Form>
+      </ButtonWrapper>
+    </SigninWrapper>
   );
 }
+
+SigninForm.propTypes = {
+  setIsSignedIn: PropTypes.func.isRequired,
+};
 
 export default SigninForm;

@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
+import styled from 'styled-components';
 
 import UserProfile from '../components/UserProfile';
 import SigninForm from '../components/SigninForm';
 
-const { Search } = Input;
 const { Item } = Menu;
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
 
 function AppLayout({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -26,7 +30,7 @@ function AppLayout({ children }) {
           </Link>
         </Item>
         <Item key="hashtag">
-          <Search enterButton style={{ verticalAlign: 'middle' }} />
+          <SearchInput />
         </Item>
         <Item key="signup">
           <Link href="/signup">
@@ -36,7 +40,11 @@ function AppLayout({ children }) {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isSignedIn ? <UserProfile /> : <SigninForm />}
+          {isSignedIn ? (
+            <UserProfile setIsSignedIn={setIsSignedIn} />
+          ) : (
+            <SigninForm setIsSignedIn={setIsSignedIn} />
+          )}
         </Col>
         <Col xs={24} md={12}>
           {children}
