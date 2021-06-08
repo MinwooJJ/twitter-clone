@@ -15,8 +15,8 @@
 	},
 	// 이미 만들어진 규칙을 따라 한다는 의미
 	"extends": [
-		"eslint: recommended",
-		"plugin: react/recommended"
+		"eslint:recommended",
+		"plugin:react/recommended"
 	],
 	"plugins": [
 		"import",
