@@ -1,8 +1,9 @@
-import { Card, Popover, Button, Avatar } from 'antd';
+import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PostImages from '../components/PostImages';
+import CommentForm from '../components/CommentForm';
 
 import {
   RetweetOutlined,
@@ -69,9 +70,25 @@ function PostCard({ post }) {
           description={post.content}
         />
       </Card>
-      {commentFormOpened && <div>Comments Area</div>}
-      {/* <CommentForm />
-      <Comments /> */}
+      {commentFormOpened && (
+        <div>
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length} with comments`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  content={item.content}
+                />
+              </li>
+            )}
+          />
+        </div>
+      )}
     </div>
   );
 }

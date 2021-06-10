@@ -23,13 +23,13 @@ export const initialState = {
           User: {
             nickname: 'imme',
           },
-          content: 'Wow!',
+          content: 'Wow! You are so hot',
         },
         {
           User: {
             nickname: 'yessi',
           },
-          content: 'Cool!',
+          content: 'You are really my type',
         },
       ],
     },
