@@ -3,7 +3,8 @@ import { Form, Input, Button } from 'antd';
 import useInput from '../hooks/useInput';
 import Link from 'next/link';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { signinAction } from '../reducers';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -13,13 +14,14 @@ const SigninWrapper = styled(Form)`
   padding: 10px;
 `;
 
-function SigninForm({ setIsSignedIn }) {
+function SigninForm() {
+  const dispatch = useDispatch();
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    setIsSignedIn(true);
+    dispatch(signinAction({ id, password }));
   }, [id, password]);
 
   return (
@@ -53,9 +55,5 @@ function SigninForm({ setIsSignedIn }) {
     </SigninWrapper>
   );
 }
-
-SigninForm.propTypes = {
-  setIsSignedIn: PropTypes.func.isRequired,
-};
 
 export default SigninForm;

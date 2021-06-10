@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import UserProfile from '../components/UserProfile';
 import SigninForm from '../components/SigninForm';
@@ -14,7 +15,7 @@ const SearchInput = styled(Input.Search)`
 `;
 
 function AppLayout({ children }) {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const isSignedIn = useSelector((state) => state.user.isSignedIn);
 
   return (
     <div>
@@ -40,11 +41,7 @@ function AppLayout({ children }) {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isSignedIn ? (
-            <UserProfile setIsSignedIn={setIsSignedIn} />
-          ) : (
-            <SigninForm setIsSignedIn={setIsSignedIn} />
-          )}
+          {isSignedIn ? <UserProfile /> : <SigninForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}

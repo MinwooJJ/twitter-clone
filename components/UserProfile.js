@@ -1,12 +1,15 @@
 import { Card, Avatar, Button } from 'antd';
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { signoutAction } from '../reducers';
 
 const { Meta } = Card;
 
-function UserProfile({ setIsSignedIn }) {
+function UserProfile() {
+  const dispatch = useDispatch();
+
   const onSignout = useCallback(() => {
-    setIsSignedIn(false);
+    dispatch(signoutAction());
   }, []);
 
   return (
@@ -31,9 +34,5 @@ function UserProfile({ setIsSignedIn }) {
     </Card>
   );
 }
-
-UserProfile.propTypes = {
-  setIsSignedIn: PropTypes.func.isRequired,
-};
 
 export default UserProfile;
