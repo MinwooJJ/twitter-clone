@@ -1,7 +1,7 @@
 import { Card, Avatar, Button } from 'antd';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { signoutAction } from '../reducers';
+import { signoutAction } from '../reducers/user';
 
 const { Meta } = Card;
 

@@ -1,54 +1,21 @@
-const initialState = {
-  user: {
-    isSignedIn: false,
-    user: null,
-    signUpdata: {},
-    signinData: {},
+import { HYDRATE } from 'next-redux-wrapper';
+import { combineReducers } from 'redux';
+
+import user from './user';
+import post from './post';
+
+const rootReducer = combineReducers({
+  index: (state = {}, action) => {
+    switch (action.type) {
+      case HYDRATE:
+        return { ...state, ...action.payload };
+
+      default:
+        return state;
+    }
   },
-  post: {
-    mainPosts: [],
-  },
-};
-
-// action creator
-export const signinAction = (data) => {
-  return {
-    type: 'SIGN_IN',
-    data,
-  };
-};
-
-export const signoutAction = () => {
-  return {
-    type: 'SIGN_OUT',
-  };
-};
-
-function rootReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'SIGN_IN':
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isSignedIn: true,
-          user: action.data,
-        },
-      };
-
-    case 'SIGN_OUT':
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isSignedIn: false,
-          user: null,
-        },
-      };
-
-    default:
-      return state;
-  }
-}
+  user,
+  post,
+});
 
 export default rootReducer;

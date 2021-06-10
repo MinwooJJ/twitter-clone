@@ -4,7 +4,7 @@ import useInput from '../hooks/useInput';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { signinAction } from '../reducers';
+import { signinAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
