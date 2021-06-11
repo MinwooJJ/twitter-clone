@@ -1,12 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
-
+import ImagesZoom from './ImagesZoom';
 function PostImages({ images }) {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setShowImagesZoom(false);
   }, []);
 
   if (images.length === 1) {
@@ -18,6 +22,7 @@ function PostImages({ images }) {
           alt={images[0].src}
           onClick={onZoom}
         />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
@@ -39,6 +44,7 @@ function PostImages({ images }) {
           alt={images[1].src}
           onClick={onZoom}
         />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
@@ -66,12 +72,13 @@ function PostImages({ images }) {
         <br />
         {images.length - 1} See More
       </div>
+      {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
     </>
   );
 }
 
 PostImages.propTypes = {
-  images: PropTypes.array.isRequired,
+  images: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PostImages;
