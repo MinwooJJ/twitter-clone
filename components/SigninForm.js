@@ -3,8 +3,8 @@ import { Form, Input, Button } from 'antd';
 import useInput from '../hooks/useInput';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { signinAction } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -16,12 +16,13 @@ const SigninWrapper = styled(Form)`
 
 function SigninForm() {
   const dispatch = useDispatch();
+  const { isSigningIn } = useSelector((state) => state.user);
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    dispatch(signinAction({ id, password }));
+    dispatch(signInRequestAction({ id, password }));
   }, [id, password]);
 
   return (
@@ -43,12 +44,12 @@ function SigninForm() {
         />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={false}>
-          Signin
+        <Button type="primary" htmlType="submit" loading={isSigningIn}>
+          SignIn
         </Button>
         <Link href="/signup">
           <a>
-            <Button>Signup</Button>
+            <Button>SignUp</Button>
           </a>
         </Link>
       </ButtonWrapper>

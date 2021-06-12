@@ -6,13 +6,13 @@ import axios from 'axios';
 // 실제 비동기 실행 코드
 // }
 
-function* AddPost() {
+function* AddPost(action) {
   try {
     // const result = yield call(signinAPI);
     yield delay(1000);
     yield put({
       type: 'ADD_POST_SUCCESS',
-      data: result.data,
+      data: action.data,
     });
   } catch (err) {
     yield put({

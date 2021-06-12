@@ -50,7 +50,7 @@ function AppLayout({ children }) {
         </Item>
         <Item key="signup">
           <Link href="/signup">
-            <a>Signup</a>
+            <a>SignUp</a>
           </Link>
         </Item>
       </Menu>

@@ -3,16 +3,16 @@ import axios from 'axios';
 
 // function signInAPI() {
 // return axios...
-// 실제 비동기 실행 코드
 // }
 
-function* SignIn() {
+function* signIn(action) {
   try {
     // const result = yield call(signinAPI);
     yield delay(1000);
     yield put({
       type: 'SIGN_IN_SUCCESS',
-      data: result.data,
+      // Temporary signin dummy data
+      data: action.data,
     });
   } catch (err) {
     yield put({
@@ -22,28 +22,27 @@ function* SignIn() {
   }
 }
 
-function* SignOut() {
+function* signOut() {
   try {
     // const result = yield call(signinAPI);
     yield delay(1000);
     yield put({
-      type: 'SIGN_IN_SUCCESS',
-      data: result.data,
+      type: 'SIGN_OUT_SUCCESS',
     });
   } catch (err) {
     yield put({
-      type: 'SIGN_IN_FAILURE',
+      type: 'SIGN_OUT_FAILURE',
       data: err.response.data,
     });
   }
 }
 
 function* watchSignIn() {
-  yield takeLatest('SIGN_IN_REQUEST', SignIn);
+  yield takeLatest('SIGN_IN_REQUEST', signIn);
 }
 
 function* watchSignOut() {
-  yield takeLatest('SIGN_OUT_REQUEST', SignOut);
+  yield takeLatest('SIGN_OUT_REQUEST', signOut);
 }
 
 export default function* userSaga() {

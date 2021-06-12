@@ -47,7 +47,7 @@ function Signup() {
     <>
       <AppLayout>
         <Head>
-          <title>Signup | Tweeter</title>
+          <title>SignUp | Tweeter</title>
         </Head>
         <Form onFinish={onSubmit}>
           <div>
