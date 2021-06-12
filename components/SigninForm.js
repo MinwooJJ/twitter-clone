@@ -21,7 +21,6 @@ function SigninForm() {
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
     dispatch(signInRequestAction({ id, password }));
   }, [id, password]);
 

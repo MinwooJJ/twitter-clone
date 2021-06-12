@@ -1,19 +1,39 @@
+import {
+  SIGN_IN_REQUEST,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAILURE,
+  SIGN_OUT_REQUEST,
+  SIGN_OUT_SUCCESS,
+  SIGN_OUT_FAILURE,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
+} from '../actions';
+
 export const initialState = {
-  isSignedIn: false,
-  isSigningIn: false,
-  isSigningOut: false,
+  signInLoading: false,
+  signInDone: false,
+  signInError: null,
+
+  signOutLoading: false,
+  signOutDone: false,
+  signOutError: null,
+
+  signUpLoading: false,
+  signUpDone: false,
+  signUpError: null,
   me: null,
   signUpdata: {},
   signInData: {},
 };
 
-const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
-const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
-const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
-
-const SIGN_OUT_REQUEST = 'SIGN_OUT_REQUEST';
-const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS';
-const SIGN_OUT_FAILURE = 'SIGN_OUT_FAILURE';
+const dummyUser = (data) => ({
+  ...data,
+  nickname: 'minwoo',
+  Posts: [],
+  Followings: [],
+  Followers: [],
+});
 
 // action creator
 export function signInRequestAction(data) {
@@ -29,48 +49,81 @@ export function signOutRequestAction() {
   };
 }
 
+export function signUpRequestAction(data) {
+  return {
+    type: SIGN_UP_REQUEST,
+    data,
+  };
+}
+
 function reducer(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN_REQUEST:
       return {
         ...state,
-        isSigningIn: true,
+        signInLoading: true,
+        signInDone: false,
+        signInError: null,
       };
 
     case SIGN_IN_SUCCESS:
       return {
         ...state,
-        isSigningIn: false,
-        isSignedIn: true,
+        signInLoading: false,
+        signInDone: true,
         // Temporary nickname dummy data
-        me: { ...action.data, nickname: 'minwoo' },
+        me: dummyUser(action.data),
       };
 
     case SIGN_IN_FAILURE:
       return {
         ...state,
-        isSigningIn: false,
-        isSignedIn: false,
+        signInLoading: false,
+        signInError: action.error,
       };
 
     case SIGN_OUT_REQUEST:
       return {
         ...state,
-        isSigningOut: true,
+        signOutLoading: true,
+        signOutDone: false,
+        signOutError: null,
       };
 
     case SIGN_OUT_SUCCESS:
       return {
         ...state,
-        isSigningOut: false,
-        isSignedIn: false,
-        me: null,
+        signOutLoading: false,
+        signOutDone: true,
       };
 
     case SIGN_OUT_FAILURE:
       return {
         ...state,
-        isSigningOut: false,
+        signOutLoading: false,
+        signOutError: action.error,
+      };
+
+    case SIGN_UP_REQUEST:
+      return {
+        ...state,
+        signUpLoading: true,
+        signUpDone: false,
+        signUpError: null,
+      };
+
+    case SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpDone: true,
+      };
+
+    case SIGN_UP_FAILURE:
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpError: action.error,
       };
 
     default:

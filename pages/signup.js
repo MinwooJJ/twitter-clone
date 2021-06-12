@@ -39,9 +39,7 @@ function Signup() {
     if (!term) {
       return setTermError(true);
     }
-
-    console.log(id, nickname, password);
-  }, [password, passwordCheck, term, id, nickname]);
+  }, [password, passwordCheck, term]);
 
   return (
     <>
