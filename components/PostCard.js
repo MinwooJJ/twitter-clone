@@ -48,7 +48,7 @@ function PostCard({ post }) {
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
             key="more"
-            content={(
+            content={
               <Group>
                 {id && post.User.id === id ? (
                   <>
@@ -59,7 +59,7 @@ function PostCard({ post }) {
                   <Button>Report</Button>
                 )}
               </Group>
-            )}
+            }
           >
             <EllipsisOutlined />
           </Popover>,

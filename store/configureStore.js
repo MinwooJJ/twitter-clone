@@ -7,14 +7,18 @@ import reducer from '../reducers';
 import rootSaga from '../sagas';
 
 // custom middleware
-const loggerMiddleware = () => (next) => (action) => next(action);
+const loggerMiddleware = () => (next) => (action) => {
+  console.log(action);
+  return next(action);
+};
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
-  const enhancer = process.env.NODE_ENV === 'production'
-    ? compose(applyMiddleware(...middlewares))
-    : composeWithDevTools(applyMiddleware(...middlewares));
+  const enhancer =
+    process.env.NODE_ENV === 'production'
+      ? compose(applyMiddleware(...middlewares))
+      : composeWithDevTools(applyMiddleware(...middlewares));
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;

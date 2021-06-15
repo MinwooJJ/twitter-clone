@@ -108,8 +108,9 @@ function Signup() {
               name="user-term"
               checked={term}
               onChange={onChangeTerm}
-            // eslint-disable-next-line react/no-unescaped-entities
-            >I won't curse
+              // eslint-disable-next-line react/no-unescaped-entities
+            >
+              I won't curse
             </Checkbox>
             {termError && <ErrorMessage>Required Field</ErrorMessage>}
           </div>

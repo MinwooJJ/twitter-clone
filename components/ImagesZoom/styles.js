@@ -1,3 +1,4 @@
+/* eslint-disable no-tabs */
 import styled, { createGlobalStyle } from 'styled-components';
 import { CloseOutlined } from '@ant-design/icons';
 

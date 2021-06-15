@@ -18,8 +18,7 @@ function PostForm() {
   }, [addPostDone]);
 
   const onSubmit = useCallback(() => {
-    dispatch(addPostRequest({ text }));
-    setText('');
+    dispatch(addPostRequest(text));
   }, [text]);
 
   const imageInput = useRef();
@@ -37,7 +36,7 @@ function PostForm() {
         value={text}
         onChange={onChangeText}
         maxLength={140}
-        placeholder={'What\'s happening'}
+        placeholder={"What's happening"}
       />
       <div>
         <input type="file" multiple hidden ref={imageInput} />

@@ -8,6 +8,9 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
 } from '../actions';
 
 export const initialState = {
@@ -22,6 +25,11 @@ export const initialState = {
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
+
+  changeNicknameLoading: false,
+  changeNicknameDone: false,
+  changeNicknameError: null,
+
   me: null,
   signUpdata: {},
   signInData: {},
@@ -29,6 +37,7 @@ export const initialState = {
 
 const dummyUser = (data) => ({
   ...data,
+  id: 1,
   nickname: 'minwoo',
   Posts: [],
   Followings: [],
@@ -52,6 +61,13 @@ export function signOutRequestAction() {
 export function signUpRequestAction(data) {
   return {
     type: SIGN_UP_REQUEST,
+    data,
+  };
+}
+
+export function changeNicknameRequestAction(data) {
+  return {
+    type: CHANGE_NICKNAME_REQUEST,
     data,
   };
 }
@@ -124,6 +140,28 @@ function reducer(state = initialState, action) {
         ...state,
         signUpLoading: false,
         signUpError: action.error,
+      };
+
+    case CHANGE_NICKNAME_REQUEST:
+      return {
+        ...state,
+        changeNicknameLoading: true,
+        changeNicknameDone: false,
+        changeNicknameError: null,
+      };
+
+    case CHANGE_NICKNAME_SUCCESS:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameDone: true,
+      };
+
+    case CHANGE_NICKNAME_FAILURE:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameError: action.error,
       };
 
     default:

@@ -1,0 +1,13 @@
+{
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "declaration": "parens",
+    "assignment": "parens",
+    "return": "parens",
+    "arrow": "parens",
+    "condition": "ignore",
+    "logical": "ignore",
+    "prop": "ignore"
+}
