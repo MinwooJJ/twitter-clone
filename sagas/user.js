@@ -1,3 +1,5 @@
+import { all, fork, delay, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 import {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
@@ -9,8 +11,6 @@ import {
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
 } from '../actions';
-import { all, fork, delay, put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
 
 // function signInAPI() {
 // return axios...

@@ -1,22 +1,27 @@
 import React, { useCallback, useState } from 'react';
-import useInput from '../hooks/useInput';
-import AppLayout from '../components/AppLayout';
+import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { Button, Checkbox, Form, Input } from 'antd';
+import useInput from '../hooks/useInput';
+import AppLayout from '../components/AppLayout';
+import { signUpRequestAction } from '../reducers/user';
 
 const ErrorMessage = styled.div`
   color: red;
 `;
 
 function Signup() {
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
   const [term, setTerm] = useState('');
+
+  const dispatch = useDispatch();
+  const { signUpLoading } = useSelector((state) => state.user);
 
   const onChangeTerm = useCallback((e) => {
     setTerm(e.target.checked);
@@ -39,6 +44,8 @@ function Signup() {
     if (!term) {
       return setTermError(true);
     }
+
+    dispatch(signUpRequestAction({ email, password, nickname }));
   }, [password, passwordCheck, term]);
 
   return (
@@ -49,9 +56,15 @@ function Signup() {
         </Head>
         <Form onFinish={onSubmit}>
           <div>
-            <label htmlFor="user-id">ID</label>
+            <label htmlFor="user-email">E-mail</label>
             <br />
-            <Input name="user-id" value={id} required onChange={onChangeId} />
+            <Input
+              name="user-email"
+              type="email"
+              value={email}
+              required
+              onChange={onChangeEmail}
+            />
           </div>
           <div>
             <label htmlFor="user-nickname">Nickname</label>
@@ -95,12 +108,14 @@ function Signup() {
               name="user-term"
               checked={term}
               onChange={onChangeTerm}
-            >{`I won't curse`}</Checkbox>
+            // eslint-disable-next-line react/no-unescaped-entities
+            >I won't curse
+            </Checkbox>
             {termError && <ErrorMessage>Required Field</ErrorMessage>}
           </div>
           <div style={{ marginTop: 10 }}>
-            <Button type="primary" htmlType="submit">
-              Sign Up
+            <Button type="primary" htmlType="submit" loading={signUpLoading}>
+              SignUp
             </Button>
           </div>
         </Form>

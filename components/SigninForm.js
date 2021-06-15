@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { Form, Input, Button } from 'antd';
-import useInput from '../hooks/useInput';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
 import { signInRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
@@ -16,20 +16,26 @@ const SigninWrapper = styled(Form)`
 
 function SigninForm() {
   const dispatch = useDispatch();
-  const { isSigningIn } = useSelector((state) => state.user);
-  const [id, onChangeId] = useInput('');
+  const { signInLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
-    dispatch(signInRequestAction({ id, password }));
-  }, [id, password]);
+    dispatch(signInRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <SigninWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">ID</label>
+        <label htmlFor="user-email">E-mail</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input
+          name="user-email"
+          type="email"
+          value={email}
+          onChange={onChangeEmail}
+          required
+        />
       </div>
       <div>
         <label htmlFor="user-password">Password</label>
@@ -43,7 +49,7 @@ function SigninForm() {
         />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={isSigningIn}>
+        <Button type="primary" htmlType="submit" loading={signInLoading}>
           SignIn
         </Button>
         <Link href="/signup">

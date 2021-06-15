@@ -2,10 +2,6 @@ import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PostImages from './PostImages';
-import CommentForm from './CommentForm';
-import PostCardContent from './PostCardContent';
-
 import {
   RetweetOutlined,
   HeartOutlined,
@@ -13,6 +9,10 @@ import {
   MessageOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
+import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
+
+import PostImages from './PostImages';
 
 const { Meta } = Card;
 const { Group } = Button;
@@ -48,7 +48,7 @@ function PostCard({ post }) {
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
             key="more"
-            content={
+            content={(
               <Group>
                 {id && post.User.id === id ? (
                   <>
@@ -59,7 +59,7 @@ function PostCard({ post }) {
                   <Button>Report</Button>
                 )}
               </Group>
-            }
+            )}
           >
             <EllipsisOutlined />
           </Popover>,

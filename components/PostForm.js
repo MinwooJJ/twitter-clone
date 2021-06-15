@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import { addPostRequest } from '../reducers/post';
@@ -7,15 +7,22 @@ import { addPostRequest } from '../reducers/post';
 const TextArea = Input;
 
 function PostForm() {
-  const imageInput = useRef();
-  const { imagePaths } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const [text, onChangeText, setText] = useInput('');
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
+
   const onSubmit = useCallback(() => {
-    dispatch(addPostRequest);
+    dispatch(addPostRequest({ text }));
     setText('');
-  }, []);
+  }, [text]);
+
+  const imageInput = useRef();
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
@@ -30,7 +37,7 @@ function PostForm() {
         value={text}
         onChange={onChangeText}
         maxLength={140}
-        placeholder={`What's happening`}
+        placeholder={'What\'s happening'}
       />
       <div>
         <input type="file" multiple hidden ref={imageInput} />

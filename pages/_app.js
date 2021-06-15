@@ -4,6 +4,7 @@ import Head from 'next/head';
 import 'antd/dist/antd.css';
 import withReduxSaga from 'next-redux-saga';
 import wrapper from '../store/configureStore';
+
 function Tweeter({ Component }) {
   return (
     <>

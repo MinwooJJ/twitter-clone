@@ -7,7 +7,7 @@ const { Meta } = Card;
 
 function UserProfile() {
   const dispatch = useDispatch();
-  const { me, isSigningOut } = useSelector((state) => state.user);
+  const { me, signOutLoading } = useSelector((state) => state.user);
 
   const onSignout = useCallback(() => {
     dispatch(signOutRequestAction());
@@ -18,20 +18,23 @@ function UserProfile() {
       actions={[
         <div key="posts">
           Posts
-          <br />0
+          <br />
+          {me.Posts.length}
         </div>,
         <div key="following">
           Following
-          <br />0
+          <br />
+          {me.Followings.length}
         </div>,
         <div key="follower">
           Follower
-          <br />0
+          <br />
+          {me.Followers.length}
         </div>,
       ]}
     >
       <Meta title={me.nickname} avatar={<Avatar>{me.nickname[0]}</Avatar>} />
-      <Button onClick={onSignout} loading={isSigningOut}>
+      <Button onClick={onSignout} loading={signOutLoading}>
         SignOut
       </Button>
     </Card>

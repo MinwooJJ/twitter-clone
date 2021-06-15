@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useSelector } from 'react-redux';
-import { createGlobalStyle } from 'styled-components';
 
-import UserProfile from '../components/UserProfile';
-import SigninForm from '../components/SigninForm';
+import UserProfile from './UserProfile';
+import SigninForm from './SigninForm';
 
 const Global = createGlobalStyle`
   .ant-row {
@@ -29,7 +28,7 @@ const SearchInput = styled(Input.Search)`
 `;
 
 function AppLayout({ children }) {
-  const { isSignedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>
@@ -56,7 +55,7 @@ function AppLayout({ children }) {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isSignedIn ? <UserProfile /> : <SigninForm />}
+          {me ? <UserProfile /> : <SigninForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
