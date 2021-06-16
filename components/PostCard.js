@@ -10,6 +10,7 @@ import {
   EllipsisOutlined,
 } from '@ant-design/icons';
 import CommentForm from './CommentForm';
+import FollowButton from './FollowButton';
 import PostCardContent from './PostCardContent';
 
 import PostImages from './PostImages';
@@ -79,6 +80,7 @@ function PostCard({ post }) {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        extra={id && <FollowButton post={post} />}
       >
         <Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}

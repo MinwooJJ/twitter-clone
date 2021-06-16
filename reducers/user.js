@@ -12,11 +12,25 @@ import {
   CHANGE_NICKNAME_REQUEST,
   CHANGE_NICKNAME_SUCCESS,
   CHANGE_NICKNAME_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
   ADD_POST_TO_ME,
   REMOVE_POST_OF_ME,
 } from '../actions';
 
 export const initialState = {
+  followLoading: false,
+  followDone: false,
+  followError: null,
+
+  unfollowLoading: false,
+  unfollowDone: false,
+  unfollowError: null,
+
   signInLoading: false,
   signInDone: false,
   signInError: null,
@@ -48,6 +62,20 @@ const dummyUser = (data) => ({
 });
 
 // action creator
+export function followRequestAction(data) {
+  return {
+    type: FOLLOW_REQUEST,
+    data,
+  };
+}
+
+export function unfollowRequestAction(data) {
+  return {
+    type: UNFOLLOW_REQUEST,
+    data,
+  };
+}
+
 export function signInRequestAction(data) {
   return {
     type: SIGN_IN_REQUEST,
@@ -78,6 +106,42 @@ export function changeNicknameRequestAction(data) {
 function reducer(state = initialState, action) {
   return produce(state, (draft) => {
     switch (action.type) {
+      case FOLLOW_REQUEST:
+        draft.followLoading = true;
+        draft.followDone = false;
+        draft.followError = null;
+        break;
+
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false;
+        draft.followDone = true;
+        draft.me.Followings.push({ id: action.data });
+        break;
+
+      case FOLLOW_FAILURE:
+        draft.followLoading = false;
+        draft.followError = action.error;
+        break;
+
+      case UNFOLLOW_REQUEST:
+        draft.unfollowLoading = true;
+        draft.unfollowDone = false;
+        draft.unfollowError = null;
+        break;
+
+      case UNFOLLOW_SUCCESS:
+        draft.unfollowLoading = false;
+        draft.unfollowDone = true;
+        draft.me.Followings = draft.me.Followings.filter(
+          (v) => v.id !== action.data
+        );
+        break;
+
+      case UNFOLLOW_FAILURE:
+        draft.unfollowLoading = false;
+        draft.unfollowError = action.error;
+        break;
+
       case SIGN_IN_REQUEST:
         draft.signInLoading = true;
         draft.signInDone = false;

@@ -8,7 +8,7 @@ import rootSaga from '../sagas';
 
 // custom middleware
 const loggerMiddleware = () => (next) => (action) => {
-  console.log(action);
+  // console.log(action);
   return next(action);
 };
 
