@@ -11,55 +11,21 @@ import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
+  LOAD_POSTS_FAILURE,
 } from '../actions';
 
 export const initialState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: 'min',
-      },
-      content: 'First post #hashtag #express',
-      Images: [
-        {
-          id: shortId.generate(),
-          src: 'https://pbs.twimg.com/profile_images/1354479643882004483/Btnfm47p_400x400.jpg',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://help.twitter.com/content/dam/help-twitter/brand/logo.png',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://blog.kakaocdn.net/dn/x0By5/btqzvqqdDPp/8PZJ4aMKkNgBJAtPySP5Ik/img.jpg',
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'imme',
-          },
-          content: 'Wow! You are so hot',
-        },
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'yessi',
-          },
-          content: 'You are really my type',
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [],
+  hasMorePost: true,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -68,8 +34,8 @@ export const initialState = {
   addCommentError: null,
 };
 
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20)
+export const generateDummyPost = (number) =>
+  Array(number)
     .fill()
     .map(() => ({
       id: shortId.generate(),
@@ -92,8 +58,7 @@ initialState.mainPosts = initialState.mainPosts.concat(
           content: faker.lorem.sentence(),
         },
       ],
-    }))
-);
+    }));
 
 export const addPostRequest = (data) => ({
   type: ADD_POST_REQUEST,
@@ -108,6 +73,10 @@ export const removePostRequest = (data) => ({
 export const addCommentRequest = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
+});
+
+export const loadPostsRequest = () => ({
+  type: LOAD_POSTS_REQUEST,
 });
 
 const dummyPost = ({ id, content }) => ({
@@ -186,6 +155,24 @@ function reducer(state = initialState, action) {
         draft.addCommentError = action.error;
         break;
 
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+
+      case LOAD_POSTS_SUCCESS: {
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = action.data.concat(draft.mainPosts);
+        draft.hasMorePost = draft.mainPosts.length < 50;
+        break;
+      }
+
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       default:
         break;
     }

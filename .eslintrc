@@ -38,6 +38,7 @@
 		"object-curly-newline": "off",
 		"linebreak-style": "off",
 		"operator-linebreak": "off",
-		"no-param-reassign": "off"
+		"no-param-reassign": "off",
+		"implicit-arrow-linebreak": "off"
 	}
 }
