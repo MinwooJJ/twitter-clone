@@ -1,5 +1,6 @@
 import shortId from 'shortid';
 import produce from 'immer';
+import faker from 'faker';
 import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
@@ -66,6 +67,33 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [
+        {
+          src: faker.image.image(),
+        },
+      ],
+      Comments: [
+        {
+          User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+          },
+          content: faker.lorem.sentence(),
+        },
+      ],
+    }))
+);
 
 export const addPostRequest = (data) => ({
   type: ADD_POST_REQUEST,
