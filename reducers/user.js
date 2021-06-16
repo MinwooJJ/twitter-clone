@@ -47,6 +47,8 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
 
+  followBtnId: '',
+
   me: null,
   signUpdata: {},
   signInData: {},
@@ -110,6 +112,7 @@ function reducer(state = initialState, action) {
         draft.followLoading = true;
         draft.followDone = false;
         draft.followError = null;
+        draft.followBtnId = action.data;
         break;
 
       case FOLLOW_SUCCESS:
@@ -127,6 +130,7 @@ function reducer(state = initialState, action) {
         draft.unfollowLoading = true;
         draft.unfollowDone = false;
         draft.unfollowError = null;
+        draft.followBtnId = action.data;
         break;
 
       case UNFOLLOW_SUCCESS:
