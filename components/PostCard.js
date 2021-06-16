@@ -1,7 +1,7 @@
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   RetweetOutlined,
   HeartOutlined,
@@ -13,6 +13,7 @@ import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 
 import PostImages from './PostImages';
+import { removePostRequest } from '../reducers/post';
 
 const { Meta } = Card;
 const { Group } = Button;
@@ -20,15 +21,23 @@ function PostCard({ post }) {
   // dummy data
   const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+
+  const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
+  const { removePostLoading } = useSelector((state) => state.post);
+  const id = me?.id;
+
   const onToggleLike = useCallback(() => {
     setLiked((prev) => !prev);
   }, []);
+
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
 
-  const { me } = useSelector((state) => state.user);
-  const id = me?.id;
+  const onRemovePost = useCallback(() => {
+    dispatch(removePostRequest(post.id));
+  }, [post.id]);
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -53,7 +62,13 @@ function PostCard({ post }) {
                 {id && post.User.id === id ? (
                   <>
                     <Button>Edit</Button>
-                    <Button type="danger">Delete</Button>
+                    <Button
+                      type="danger"
+                      onClick={onRemovePost}
+                      loading={removePostLoading}
+                    >
+                      Delete
+                    </Button>
                   </>
                 ) : (
                   <Button>Report</Button>

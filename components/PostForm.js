@@ -7,7 +7,9 @@ import { addPostRequest } from '../reducers/post';
 const TextArea = Input;
 
 function PostForm() {
-  const { imagePaths, addPostDone } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone, addPostLoading } = useSelector(
+    (state) => state.post
+  );
   const [text, onChangeText, setText] = useInput('');
   const dispatch = useDispatch();
 
@@ -41,7 +43,12 @@ function PostForm() {
       <div>
         <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>Image Upload</Button>
-        <Button type="primary" style={{ float: 'right' }} htmlType="submit">
+        <Button
+          type="primary"
+          style={{ float: 'right' }}
+          htmlType="submit"
+          loading={addPostLoading}
+        >
           Tweet
         </Button>
       </div>
