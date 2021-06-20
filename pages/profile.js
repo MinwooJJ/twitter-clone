@@ -10,10 +10,10 @@ function Profile() {
   const { me } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (!(me && me.id)) {
+    if (!me?.id) {
       Router.push('/');
     }
-  }, [me && me.id]);
+  }, [me?.id]);
 
   if (!me) {
     return null;

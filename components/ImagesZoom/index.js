@@ -11,7 +11,7 @@ import {
   Indicator,
 } from './styles';
 
-function ImageZoom({ images, onClose }) {
+function ImagesZoom({ images, onClose }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
@@ -48,9 +48,9 @@ function ImageZoom({ images, onClose }) {
   );
 }
 
-ImageZoom.propTypes = {
+ImagesZoom.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default ImageZoom;
+export default ImagesZoom;

@@ -33,7 +33,10 @@ function AppLayout({ children }) {
   return (
     <div>
       <Global />
-      <Menu mode="horizontal">
+      <Menu
+        mode="horizontal"
+        style={{ position: 'fixed', width: '100%', zIndex: 1000 }}
+      >
         <Item key="tweeter">
           <Link href="/">
             <a>Tweeter</a>
@@ -53,7 +56,7 @@ function AppLayout({ children }) {
           </Link>
         </Item>
       </Menu>
-      <Row gutter={8}>
+      <Row gutter={8} style={{ paddingTop: '46px' }}>
         <Col xs={24} md={6}>
           {me ? <UserProfile /> : <SigninForm />}
         </Col>
@@ -62,7 +65,7 @@ function AppLayout({ children }) {
         </Col>
         <Col xs={24} md={6}>
           <a
-            href="https://pedantic-payne-51a393.netlify.app/"
+            href="https://www.linkedin.com/in/minwoo-jung-9857331b8/"
             target="_blank"
             rel="noreferrer noopener"
           >

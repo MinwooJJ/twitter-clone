@@ -12,8 +12,8 @@ import {
 import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
 import PostCardContent from './PostCardContent';
-
 import PostImages from './PostImages';
+
 import { removePostRequest } from '../reducers/post';
 
 const { Meta } = Card;
