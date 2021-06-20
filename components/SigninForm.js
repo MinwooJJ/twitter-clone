@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -16,9 +16,15 @@ const SigninWrapper = styled(Form)`
 
 function SigninForm() {
   const dispatch = useDispatch();
-  const { signInLoading } = useSelector((state) => state.user);
+  const { signInLoading, signInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
+  useEffect(() => {
+    if (signInError) {
+      alert(signInError);
+    }
+  }, [signInError]);
 
   const onSubmitForm = useCallback(() => {
     dispatch(signInRequestAction({ email, password }));

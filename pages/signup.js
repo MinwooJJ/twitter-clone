@@ -22,13 +22,20 @@ function Signup() {
   const [term, setTerm] = useState('');
 
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector(
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
     (state) => state.user
   );
 
+  // replace는 페이지가 기록에서 사라져버림
+  useEffect(() => {
+    if (me?.id) {
+      Router.replace('/');
+    }
+  }, [me?.id]);
+
   useEffect(() => {
     if (signUpDone) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [signUpDone]);
 

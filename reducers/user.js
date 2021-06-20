@@ -155,7 +155,7 @@ function reducer(state = initialState, action) {
       case SIGN_IN_SUCCESS:
         draft.signInLoading = false;
         draft.signInDone = true;
-        draft.me = dummyUser(action.data);
+        draft.me = action.data;
         break;
 
       case SIGN_IN_FAILURE:
@@ -172,6 +172,7 @@ function reducer(state = initialState, action) {
       case SIGN_OUT_SUCCESS:
         draft.signOutLoading = false;
         draft.signOutDone = true;
+        draft.me = null;
         break;
 
       case SIGN_OUT_FAILURE:

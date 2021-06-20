@@ -76,13 +76,13 @@ function* signIn(action) {
   }
 }
 
-// function signOutAPI() {
-// return axios...
-// }
+function signOutAPI() {
+  return axios.post('/user/signout');
+}
 
 function* signOut() {
   try {
-    yield delay(1000);
+    yield call(signOutAPI);
     yield put({
       type: SIGN_OUT_SUCCESS,
     });
