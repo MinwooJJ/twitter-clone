@@ -1,5 +1,6 @@
 import {
   all,
+  call,
   fork,
   delay,
   put,
@@ -26,26 +27,20 @@ import {
 } from '../actions';
 import { generateDummyPost } from '../reducers/post';
 
-// function signInAPI() {
-// return axios...
-// 실제 비동기 실행 코드
-// }
+function addPostAPI(data) {
+  return axios.post('/post', { content: data });
+}
 
 function* addPost(action) {
   try {
-    // const result = yield call(signinAPI);
-    yield delay(1000);
-    const id = shortId.generate();
+    const result = yield call(addPostAPI, action.data);
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: action.data,
-      },
+      data: result.data,
     });
     yield put({
       type: ADD_POST_TO_ME,
-      data: id,
+      data: result.data.id,
     });
   } catch (err) {
     yield put({
@@ -91,18 +86,16 @@ function* removePost(action) {
   }
 }
 
-// function signInAPI() {
-// return axios...
-// 실제 비동기 실행 코드
-// }
+function addCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/comment
+}
 
 function* addComment(action) {
   try {
-    // const result = yield call(signinAPI);
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
