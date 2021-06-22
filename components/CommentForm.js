@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { addCommentRequest } from '../reducers/post';
+import { addCommentRequestAction } from '../reducers/post';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -24,7 +24,11 @@ function CommentForm({ post }) {
 
   const onSubmitComment = useCallback(() => {
     dispatch(
-      addCommentRequest({ content: commentText, postId: post.id, userId: id })
+      addCommentRequestAction({
+        content: commentText,
+        postId: post.id,
+        userId: id,
+      })
     );
   }, [commentText, post.id, id]);
 

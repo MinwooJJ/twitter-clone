@@ -20,6 +20,9 @@ import {
   UNFOLLOW_FAILURE,
   ADD_POST_TO_ME,
   REMOVE_POST_OF_ME,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../actions';
 
 export const initialState = {
@@ -47,6 +50,10 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
 
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
+
   followBtnId: '',
 
   me: null,
@@ -68,6 +75,12 @@ export function followRequestAction(data) {
   return {
     type: FOLLOW_REQUEST,
     data,
+  };
+}
+
+export function loadMyInfoRequestAction() {
+  return {
+    type: LOAD_MY_INFO_REQUEST,
   };
 }
 
@@ -210,6 +223,23 @@ function reducer(state = initialState, action) {
       case CHANGE_NICKNAME_FAILURE:
         draft.changeNicknameLoading = false;
         draft.changeNicknameError = action.error;
+        break;
+
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoDone = false;
+        draft.loadMyInfoError = null;
+        break;
+
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoDone = true;
+        draft.me = action.data;
+        break;
+
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = action.error;
         break;
 
       case ADD_POST_TO_ME:

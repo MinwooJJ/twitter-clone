@@ -66,9 +66,13 @@ function* loadPost() {
   }
 }
 
+function removePostAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/comment
+}
+
 function* removePost(action) {
   try {
-    // const result = yield call(signinAPI);
+    const result = yield call(removePostAPI);
     yield delay(1000);
     yield put({
       type: REMOVE_POST_SUCCESS,

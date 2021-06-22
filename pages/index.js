@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import { loadPostsRequest } from '../reducers/post';
+import { loadPostsRequestAction } from '../reducers/post';
+import { loadMyInfoRequestAction } from '../reducers/user';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -13,7 +14,9 @@ function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadPostsRequest());
+    // 새로고침시 로그인 유지를 위한 dispatch
+    dispatch(loadMyInfoRequestAction());
+    dispatch(loadPostsRequestAction());
   }, []);
 
   useEffect(() => {
@@ -28,7 +31,7 @@ function Home() {
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePost && !loadPostsLoading) {
-          dispatch(loadPostsRequest());
+          dispatch(loadPostsRequestAction());
         }
       }
     }

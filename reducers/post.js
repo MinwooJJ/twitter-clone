@@ -60,22 +60,22 @@ export const generateDummyPost = (number) =>
       ],
     }));
 
-export const addPostRequest = (data) => ({
+export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
   data,
 });
 
-export const removePostRequest = (data) => ({
+export const removePostRequestAction = (data) => ({
   type: REMOVE_POST_REQUEST,
   data,
 });
 
-export const addCommentRequest = (data) => ({
+export const addCommentRequestAction = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
 });
 
-export const loadPostsRequest = () => ({
+export const loadPostsRequestAction = () => ({
   type: LOAD_POSTS_REQUEST,
 });
 

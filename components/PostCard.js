@@ -14,7 +14,7 @@ import FollowButton from './FollowButton';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 
-import { removePostRequest } from '../reducers/post';
+import { removePostRequestAction } from '../reducers/post';
 
 const { Meta } = Card;
 const { Group } = Button;
@@ -37,7 +37,7 @@ function PostCard({ post }) {
   }, []);
 
   const onRemovePost = useCallback(() => {
-    dispatch(removePostRequest(post.id));
+    dispatch(removePostRequestAction(post.id));
   }, [post.id]);
 
   return (
