@@ -1,6 +1,4 @@
-import shortId from 'shortid';
 import produce from 'immer';
-import faker from 'faker';
 import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
@@ -34,32 +32,6 @@ export const initialState = {
   addCommentError: null,
 };
 
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
-
 export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -77,26 +49,6 @@ export const addCommentRequestAction = (data) => ({
 
 export const loadPostsRequestAction = () => ({
   type: LOAD_POSTS_REQUEST,
-});
-
-const dummyPost = ({ id, content }) => ({
-  id,
-  content,
-  User: {
-    id: 1,
-    nickname: 'min',
-  },
-  Images: [],
-  Comments: [],
-});
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: 'min',
-  },
 });
 
 function reducer(state = initialState, action) {
@@ -173,6 +125,7 @@ function reducer(state = initialState, action) {
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
         break;
+
       default:
         break;
     }
