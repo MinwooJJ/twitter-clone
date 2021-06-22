@@ -61,15 +61,6 @@ export const initialState = {
   signInData: {},
 };
 
-const dummyUser = (data) => ({
-  ...data,
-  id: 1,
-  nickname: 'minwoo',
-  Posts: [],
-  Followings: [],
-  Followers: [],
-});
-
 // action creator
 export function followRequestAction(data) {
   return {
@@ -216,6 +207,7 @@ function reducer(state = initialState, action) {
         break;
 
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;

@@ -74,16 +74,15 @@ function* loadPost() {
 }
 
 function removePostAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/commet
+  return axios.delete(`/post/${data}`); // POST /post/1/commet
 }
 
 function* removePost(action) {
   try {
-    const result = yield call(removePostAPI);
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
     yield put({
       type: REMOVE_POST_OF_ME,

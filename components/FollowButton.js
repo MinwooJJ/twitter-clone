@@ -9,6 +9,7 @@ function FollowButton({ post }) {
   const { me, followLoading, unfollowLoading, followBtnId } = useSelector(
     (state) => state.user
   );
+
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
   const isClickedBtn = post.User.id === followBtnId;
 
@@ -19,6 +20,11 @@ function FollowButton({ post }) {
       dispatch(followRequestAction(post.User.id));
     }
   }, [isFollowing]);
+
+  if (post.User.id === me.id) {
+    return null;
+  }
+
   return (
     <Button
       loading={isClickedBtn && (followLoading || unfollowLoading)}
