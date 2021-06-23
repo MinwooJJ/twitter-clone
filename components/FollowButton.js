@@ -21,7 +21,7 @@ function FollowButton({ post }) {
     }
   }, [isFollowing]);
 
-  if (post.User.id === me.id) {
+  if (post.User.id === me?.id) {
     return null;
   }
 
