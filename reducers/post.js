@@ -21,6 +21,7 @@ import {
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
+  REMOVE_IMAGE,
 } from '../actions';
 
 export const initialState = {
@@ -84,6 +85,11 @@ export const uploadImagesRequestAction = (data) => ({
   data,
 });
 
+export const removeImageAction = (data) => ({
+  type: REMOVE_IMAGE,
+  data,
+});
+
 function reducer(state = initialState, action) {
   return produce(state, (draft) => {
     switch (action.type) {
@@ -97,6 +103,7 @@ function reducer(state = initialState, action) {
         draft.addPostLoading = false;
         draft.addPostDone = true;
         draft.mainPosts.unshift(action.data);
+        draft.imagePaths = [];
         break;
 
       case ADD_POST_FAILURE:
@@ -213,6 +220,10 @@ function reducer(state = initialState, action) {
       case UPLOAD_IMAGES_FAILURE:
         draft.uploadImagesLoading = false;
         draft.uploadImagesError = action.error;
+        break;
+
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
 
       default:

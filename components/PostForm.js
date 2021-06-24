@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import {
   addPostRequestAction,
+  removeImageAction,
   uploadImagesRequestAction,
 } from '../reducers/post';
 
@@ -23,12 +24,24 @@ function PostForm() {
   }, [addPostDone]);
 
   const onSubmit = useCallback(() => {
-    dispatch(addPostRequestAction(text));
-  }, [text]);
+    if (!text || !text.trim()) {
+      return alert('Please write a post');
+    }
+
+    // image upload
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append('image', p);
+    });
+    formData.append('content', text);
+
+    dispatch(addPostRequestAction(formData));
+  }, [text, imagePaths]);
 
   const onChangeImages = useCallback((e) => {
     console.log('images', e.target.files);
-    const imageFormData = new FormData(); // multipart로 처리
+    // multipart로 처리
+    const imageFormData = new FormData();
     // 유사객체이기 때문에 forEach를 빌려 쓰는 것
     [].forEach.call(e.target.files, (f) => {
       imageFormData.append('image', f);
@@ -36,6 +49,13 @@ function PostForm() {
 
     dispatch(uploadImagesRequestAction(imageFormData));
   }, []);
+
+  const onRemoveImage = useCallback(
+    (index) => () => {
+      dispatch(removeImageAction(index));
+    },
+    []
+  );
 
   const imageInput = useRef();
   const onClickImageUpload = useCallback(() => {
@@ -74,11 +94,15 @@ function PostForm() {
         </Button>
       </div>
       <div>
-        {imagePaths.map((v) => (
+        {imagePaths.map((v, i) => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img src={v} style={{ width: '200px' }} alt={v} />
+            <img
+              src={`http://localhost:3065/${v}`}
+              style={{ width: '200px' }}
+              alt={v}
+            />
             <div>
-              <Button>Delete</Button>
+              <Button onClick={onRemoveImage(i)}>Delete</Button>
             </div>
           </div>
         ))}
