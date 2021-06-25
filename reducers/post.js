@@ -22,6 +22,9 @@ import {
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
   REMOVE_IMAGE,
+  RETWEET_REQUEST,
+  RETWEET_SUCCESS,
+  RETWEET_FAILURE,
 } from '../actions';
 
 export const initialState = {
@@ -49,7 +52,15 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 };
+
+export const retweetRequestAction = (data) => ({
+  type: RETWEET_REQUEST,
+  data,
+});
 
 export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
@@ -220,6 +231,23 @@ function reducer(state = initialState, action) {
       case UPLOAD_IMAGES_FAILURE:
         draft.uploadImagesLoading = false;
         draft.uploadImagesError = action.error;
+        break;
+
+      case RETWEET_REQUEST:
+        draft.retweetLoading = true;
+        draft.retweetDone = false;
+        draft.retweetError = null;
+        break;
+
+      case RETWEET_SUCCESS: {
+        draft.retweetLoading = false;
+        draft.retweetDone = true;
+        break;
+      }
+
+      case RETWEET_FAILURE:
+        draft.retweetLoading = false;
+        draft.retweetError = action.error;
         break;
 
       case REMOVE_IMAGE:

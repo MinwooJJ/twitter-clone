@@ -15,6 +15,7 @@ function PostForm() {
     (state) => state.post
   );
   const [text, onChangeText, setText] = useInput('');
+
   const dispatch = useDispatch();
 
   useEffect(() => {

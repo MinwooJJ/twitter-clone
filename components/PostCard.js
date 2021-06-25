@@ -18,6 +18,7 @@ import {
   removePostRequestAction,
   likePostRequestAction,
   unlikePostRequestAction,
+  retweetRequestAction,
 } from '../reducers/post';
 
 const { Meta } = Card;
@@ -33,27 +34,51 @@ function PostCard({ post }) {
   const liked = post.Likers.find((v) => v.id === id);
 
   const onLike = useCallback(() => {
-    dispatch(likePostRequestAction(post.id));
-  }, []);
+    if (!id) {
+      return alert('Signin is required');
+    }
+
+    return dispatch(likePostRequestAction(post.id));
+  }, [id]);
 
   const onUnlike = useCallback(() => {
-    dispatch(unlikePostRequestAction(post.id));
-  }, []);
+    if (!id) {
+      return alert('Signin is required');
+    }
+
+    return dispatch(unlikePostRequestAction(post.id));
+  }, [id]);
 
   const onToggleComment = useCallback(() => {
-    setCommentFormOpened((prev) => !prev);
-  }, []);
+    if (!id) {
+      return alert('Signin is required');
+    }
+
+    return setCommentFormOpened((prev) => !prev);
+  }, [id]);
 
   const onRemovePost = useCallback(() => {
-    dispatch(removePostRequestAction(post.id));
-  }, [post.id]);
+    if (!id) {
+      return alert('Signin is required');
+    }
+
+    return dispatch(removePostRequestAction(post.id));
+  }, [post.id, id]);
+
+  const onRetweet = useCallback(() => {
+    if (!id) {
+      return alert('Signin is required');
+    }
+
+    return dispatch(retweetRequestAction(post.id));
+  }, [id]);
 
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined key="retweet" onClick={onRetweet} />,
           liked ? (
             <HeartTwoTone twoToneColor="red" key="heart" onClick={onUnlike} />
           ) : (
