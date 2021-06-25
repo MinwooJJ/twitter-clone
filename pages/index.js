@@ -8,10 +8,15 @@ import { loadMyInfoRequestAction } from '../reducers/user';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePost, loadPostsLoading } = useSelector(
-    (state) => state.post
-  );
+  const { mainPosts, hasMorePost, loadPostsLoading, retweetError } =
+    useSelector((state) => state.post);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   useEffect(() => {
     // 새로고침시 로그인 유지를 위한 dispatch
@@ -21,17 +26,13 @@ function Home() {
 
   useEffect(() => {
     function onScroll() {
-      // console.log(
-      //   window.scrollY,
-      //   document.documentElement.clientHeight,
-      //   document.documentElement.scrollHeight
-      // );
       if (
-        window.scrollY + document.documentElement.clientHeight >
+        window.pageYOffset + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePost && !loadPostsLoading) {
-          dispatch(loadPostsRequestAction());
+          const lastId = mainPosts[mainPosts.length - 1]?.id; // 마지막 게시글 id
+          dispatch(loadPostsRequestAction(lastId));
         }
       }
     }
@@ -39,7 +40,7 @@ function Home() {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [hasMorePost, loadPostsLoading]);
+  }, [hasMorePost, loadPostsLoading, mainPosts]);
 
   return (
     <AppLayout>

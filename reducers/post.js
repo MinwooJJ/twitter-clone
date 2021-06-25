@@ -77,8 +77,9 @@ export const addCommentRequestAction = (data) => ({
   data,
 });
 
-export const loadPostsRequestAction = () => ({
+export const loadPostsRequestAction = (data) => ({
   type: LOAD_POSTS_REQUEST,
+  data,
 });
 
 export const likePostRequestAction = (data) => ({
@@ -167,8 +168,8 @@ function reducer(state = initialState, action) {
       case LOAD_POSTS_SUCCESS: {
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hasMorePost = draft.mainPosts.length < 50;
+        draft.mainPosts = draft.mainPosts.concat(action.data);
+        draft.hasMorePost = action.data.length === 10;
         break;
       }
 
@@ -242,6 +243,7 @@ function reducer(state = initialState, action) {
       case RETWEET_SUCCESS: {
         draft.retweetLoading = false;
         draft.retweetDone = true;
+        draft.mainPosts.unshift(action.data);
         break;
       }
 
