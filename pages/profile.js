@@ -1,23 +1,20 @@
 import Router from 'next/router';
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import { useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
+import wrapper from '../store/configureStore';
 import {
   loadFollowersRequestAction,
   loadFollowingsRequestAction,
 } from '../reducers/user';
 
 function Profile() {
-  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    dispatch(loadFollowersRequestAction());
-    dispatch(loadFollowingsRequestAction());
-  }, []);
 
   useEffect(() => {
     if (!me?.id) {
@@ -42,5 +39,22 @@ function Profile() {
     </>
   );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      console.log('getServerSideProps start');
+      const cookie = req?.headers.cookie;
+      axios.defaults.headers.Cookie = '';
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      store.dispatch(loadFollowersRequestAction());
+      store.dispatch(loadFollowingsRequestAction());
+      store.dispatch(END);
+      console.log('getServerSideProps end');
+      await store.sagaTask.toPromise();
+    }
+);
 
 export default Profile;

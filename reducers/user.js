@@ -32,6 +32,9 @@ import {
   LOAD_FOLLOWINGS_REQUEST,
   LOAD_FOLLOWINGS_SUCCESS,
   LOAD_FOLLOWINGS_FAILURE,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../actions';
 
 export const initialState = {
@@ -75,9 +78,14 @@ export const initialState = {
   loadMyInfoDone: false,
   loadMyInfoError: null,
 
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
+
   followBtnId: '',
 
   me: null,
+  userInfo: null,
 };
 
 // action creator
@@ -91,6 +99,13 @@ export function followRequestAction(data) {
 export function loadMyInfoRequestAction() {
   return {
     type: LOAD_MY_INFO_REQUEST,
+  };
+}
+
+export function loadUserRequestAction(data) {
+  return {
+    type: LOAD_USER_REQUEST,
+    data,
   };
 }
 
@@ -323,6 +338,23 @@ function reducer(state = initialState, action) {
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
         draft.loadMyInfoError = action.error;
+        break;
+
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
+        break;
+
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.loadUserDone = true;
+        draft.userInfo = action.data;
+        break;
+
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
         break;
 
       case ADD_POST_TO_ME:

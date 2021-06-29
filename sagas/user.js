@@ -31,6 +31,9 @@ import {
   REMOVE_FOLLOWER_REQUEST,
   REMOVE_FOLLOWER_SUCCESS,
   REMOVE_FOLLOWER_FAILURE,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../actions';
 
 function followAPI(data) {
@@ -90,8 +93,8 @@ function* removeFollower(action) {
   }
 }
 
-function loadFollowersAPI(data) {
-  return axios.get('/user/followers', data);
+function loadFollowersAPI() {
+  return axios.get('/user/followers');
 }
 
 function* loadFollowers() {
@@ -109,8 +112,8 @@ function* loadFollowers() {
   }
 }
 
-function loadFollowingsAPI(data) {
-  return axios.get('/user/followings', data);
+function loadFollowingsAPI() {
+  return axios.get('/user/followings');
 }
 
 function* loadFollowings() {
@@ -205,6 +208,26 @@ function* loadMyInfo() {
   }
 }
 
+function loadUserAPI(data) {
+  return axios.get(`/user/${data}`);
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      // User information
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function changeNicknameAPI(data) {
   return axios.patch('/user/nickname', { nickname: data });
 }
@@ -252,6 +275,10 @@ function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
+
 function* watchChangeNickname() {
   yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
@@ -273,6 +300,7 @@ export default function* userSaga() {
     fork(watchUnfollow),
     fork(watchRemoveFollower),
     fork(watchLoadMyInfo),
+    fork(watchLoadUser),
     fork(watchChangeNickname),
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import axios from 'axios';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { loadPostsRequestAction } from '../reducers/post';
 import { loadMyInfoRequestAction } from '../reducers/user';
 import wrapper from '../store/configureStore';
-import axios from 'axios';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -52,6 +52,7 @@ function Home() {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
+      console.log('getServerSideProps start');
       // *** 중요 ***
       const cookie = req?.headers.cookie;
       axios.defaults.headers.Cookie = '';
@@ -64,6 +65,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       store.dispatch(loadPostsRequestAction());
 
       store.dispatch(END);
+      console.log('getServerSideProps end');
       await store.sagaTask.toPromise();
     }
 );
