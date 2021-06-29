@@ -78,8 +78,6 @@ export const initialState = {
   followBtnId: '',
 
   me: null,
-  signUpdata: {},
-  signInData: {},
 };
 
 // action creator
