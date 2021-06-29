@@ -5,6 +5,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { loadPostsRequestAction } from '../reducers/post';
 import { loadMyInfoRequestAction } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -17,12 +18,6 @@ function Home() {
       alert(retweetError);
     }
   }, [retweetError]);
-
-  useEffect(() => {
-    // 새로고침시 로그인 유지를 위한 dispatch
-    dispatch(loadMyInfoRequestAction());
-    dispatch(loadPostsRequestAction());
-  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -51,5 +46,12 @@ function Home() {
     </AppLayout>
   );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((context) => {
+  // 새로고침시 로그인 유지를 위한 dispatch
+  // context.store.dispatch(loadMyInfoRequestAction());
+  // context.store.dispatch(loadPostsRequestAction());
+  console.log('wrapper : ', context);
+});
 
 export default Home;
