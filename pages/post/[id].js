@@ -1,0 +1,62 @@
+import React from 'react';
+import { useRouter } from 'next/router';
+import { END } from 'redux-saga';
+import Head from 'next/head';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import wrapper from '../../store/configureStore';
+import { loadPostRequestAction } from '../../reducers/post';
+import { loadMyInfoRequestAction } from '../../reducers/user';
+import AppLayout from '../../components/AppLayout';
+import PostCard from '../../components/PostCard';
+
+const Post = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { singlePost } = useSelector((state) => state.post);
+  console.log(singlePost);
+
+  return (
+    <AppLayout>
+      <Head>
+        <title>{singlePost.User.nickname}'s Post</title>
+        <meta name="description" content={singlePost.content} />
+        <meta
+          property="og:title"
+          content={`${singlePost.User.nickname}'s Post`}
+        />
+        <meta property="og:description" content={singlePost.content} />
+        <meta
+          property="og:image"
+          content={
+            singlePost.Images[0]
+              ? singlePost.Images[0].src
+              : 'https://nodebird.com/favicon.ico'
+          }
+        />
+        <meta property="og:url" content={`https://nodebird.com/post/${id}`} />
+      </Head>
+      <PostCard post={singlePost} />
+    </AppLayout>
+  );
+};
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req, res, params }) => {
+      console.log('getServerSideProps start');
+      const cookie = req?.headers.cookie;
+      axios.defaults.headers.Cookie = '';
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+
+      store.dispatch(loadMyInfoRequestAction());
+      store.dispatch(loadPostRequestAction(params.id));
+      store.dispatch(END);
+      console.log('getServerSideProps end');
+      await store.sagaTask.toPromise();
+    }
+);
+
+export default Post;

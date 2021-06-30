@@ -12,6 +12,9 @@ import {
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_FAILURE,
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
   LIKE_POST_FAILURE,
@@ -37,6 +40,9 @@ export const initialState = {
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -55,6 +61,7 @@ export const initialState = {
   retweetLoading: false,
   retweetDone: false,
   retweetError: null,
+  singlePost: null,
 };
 
 export const retweetRequestAction = (data) => ({
@@ -79,6 +86,11 @@ export const addCommentRequestAction = (data) => ({
 
 export const loadPostsRequestAction = (data) => ({
   type: LOAD_POSTS_REQUEST,
+  data,
+});
+
+export const loadPostRequestAction = (data) => ({
+  type: LOAD_POST_REQUEST,
   data,
 });
 
@@ -176,6 +188,24 @@ function reducer(state = initialState, action) {
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
+        break;
+
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+        break;
+
+      case LOAD_POST_SUCCESS: {
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+      }
+
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
         break;
 
       case LIKE_POST_REQUEST:

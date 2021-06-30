@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import { END } from 'redux-saga';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
@@ -11,10 +11,17 @@ import wrapper from '../store/configureStore';
 import {
   loadFollowersRequestAction,
   loadFollowingsRequestAction,
+  loadMyInfoRequestAction,
 } from '../reducers/user';
 
 function Profile() {
   const { me } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadFollowersRequestAction());
+    dispatch(loadFollowingsRequestAction());
+  }, []);
 
   useEffect(() => {
     if (!me?.id) {
@@ -49,8 +56,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
       if (req && cookie) {
         axios.defaults.headers.Cookie = cookie;
       }
-      store.dispatch(loadFollowersRequestAction());
-      store.dispatch(loadFollowingsRequestAction());
+
+      store.dispatch(loadMyInfoRequestAction());
       store.dispatch(END);
       console.log('getServerSideProps end');
       await store.sagaTask.toPromise();
