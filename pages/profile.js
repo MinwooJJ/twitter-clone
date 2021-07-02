@@ -1,27 +1,31 @@
 import Router from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import { END } from 'redux-saga';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 import wrapper from '../store/configureStore';
-import {
-  loadFollowersRequestAction,
-  loadFollowingsRequestAction,
-  loadMyInfoRequestAction,
-} from '../reducers/user';
+import { loadMyInfoRequestAction } from '../reducers/user';
+
+const fetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((response) => response.data);
 
 function Profile() {
+  const [followersLimit, setFollowersLimit] = useState(3);
+  const [followingsLimit, setFollowingsLimit] = useState(3);
   const { me } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadFollowersRequestAction());
-    dispatch(loadFollowingsRequestAction());
-  }, []);
+  const { data: followersData, error: followerError } = useSWR(
+    `http://localhost:3065/user/followers?limit=${followersLimit}`,
+    fetcher
+  );
+  const { data: followingsData, error: followingError } = useSWR(
+    `http://localhost:3065/user/followers?limit=${followingsLimit}`,
+    fetcher
+  );
 
   useEffect(() => {
     if (!me?.id) {
@@ -29,8 +33,21 @@ function Profile() {
     }
   }, [me?.id]);
 
+  const loadMoreFollowings = useCallback(() => {
+    setFollowingsLimit((prev) => prev + 3);
+  }, []);
+
+  const loadMoreFollowers = useCallback(() => {
+    setFollowersLimit((prev) => prev + 3);
+  }, []);
+
   if (!me) {
-    return null;
+    return <div>Loading my information</div>;
+  }
+
+  if (followerError || followingError) {
+    console.error(followingError || followingError);
+    return <div>Error occurred while loading follow and following data</div>;
   }
 
   return (
@@ -40,8 +57,18 @@ function Profile() {
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList header="Following List" data={me.Followings} />
-        <FollowList header="Follower List" data={me.Followers} />
+        <FollowList
+          header="Following List"
+          data={followingsData}
+          onClickMore={loadMoreFollowings}
+          loading={!followingsData && !followingError}
+        />
+        <FollowList
+          header="Follower List"
+          data={followersData}
+          onClickMore={loadMoreFollowers}
+          loading={!followersData && !followerError}
+        />
       </AppLayout>
     </>
   );

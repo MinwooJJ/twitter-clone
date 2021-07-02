@@ -11,7 +11,7 @@ import {
 const { Item } = List;
 const { Meta } = Card;
 
-function FollowList({ header, data }) {
+function FollowList({ header, data, onClickMore, loading }) {
   const dispatch = useDispatch();
   const onClick = useCallback(
     (id) => () => {
@@ -32,7 +32,9 @@ function FollowList({ header, data }) {
       header={<div>{header}</div>}
       loadMore={
         <div style={{ textAlign: 'center', margin: '10px 0' }}>
-          <Button>Load More</Button>
+          <Button onClick={onClickMore} loading={loading}>
+            Load More
+          </Button>
         </div>
       }
       bordered
@@ -53,6 +55,8 @@ function FollowList({ header, data }) {
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  onClickMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default FollowList;
