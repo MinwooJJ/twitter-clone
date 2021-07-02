@@ -9,6 +9,12 @@ import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  LOAD_USER_POSTS_REQUEST,
+  LOAD_USER_POSTS_SUCCESS,
+  LOAD_USER_POSTS_FAILURE,
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_SUCCESS,
+  LOAD_HASHTAG_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
@@ -34,34 +40,43 @@ export const initialState = {
   mainPosts: [],
   imagePaths: [],
   hasMorePost: true,
+  singlePost: null,
+
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
+
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+
   retweetLoading: false,
   retweetDone: false,
   retweetError: null,
-  singlePost: null,
 };
 
 export const retweetRequestAction = (data) => ({
@@ -82,6 +97,18 @@ export const removePostRequestAction = (data) => ({
 export const addCommentRequestAction = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
+});
+
+export const loadUserPostsRequestAction = (data, lastId) => ({
+  type: LOAD_USER_POSTS_REQUEST,
+  data,
+  lastId,
+});
+
+export const loadHashtagPostsRequestAction = (data, lastId) => ({
+  type: LOAD_HASHTAG_POSTS_REQUEST,
+  data,
+  lastId,
 });
 
 export const loadPostsRequestAction = (data) => ({
@@ -172,20 +199,25 @@ function reducer(state = initialState, action) {
         break;
 
       case LOAD_POSTS_REQUEST:
+      case LOAD_USER_POSTS_REQUEST:
+      case LOAD_HASHTAG_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;
         draft.loadPostsError = null;
         break;
 
-      case LOAD_POSTS_SUCCESS: {
+      case LOAD_POSTS_SUCCESS:
+      case LOAD_USER_POSTS_SUCCESS:
+      case LOAD_HASHTAG_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = draft.mainPosts.concat(action.data);
         draft.hasMorePost = action.data.length === 10;
         break;
-      }
 
       case LOAD_POSTS_FAILURE:
+      case LOAD_USER_POSTS_FAILURE:
+      case LOAD_HASHTAG_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
         break;
