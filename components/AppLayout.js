@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useSelector } from 'react-redux';
-
+import Router from 'next/router';
 import UserProfile from './UserProfile';
 import SigninForm from './SigninForm';
+import useInput from '../hooks/useInput';
 
 const Global = createGlobalStyle`
   .ant-row {
@@ -28,7 +29,13 @@ const SearchInput = styled(Input.Search)`
 `;
 
 function AppLayout({ children }) {
+  const [searchInput, onChangeSearchInput] = useInput('');
   const { me } = useSelector((state) => state.user);
+
+  // Enter 클릭 시 onSearch 실행
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
 
   return (
     <div>
@@ -48,7 +55,12 @@ function AppLayout({ children }) {
           </Link>
         </Item>
         <Item key="hashtag">
-          <SearchInput />
+          <SearchInput
+            enterButton
+            value={searchInput}
+            onChange={onChangeSearchInput}
+            onSearch={onSearch}
+          />
         </Item>
         <Item key="signup">
           <Link href="/signup">
