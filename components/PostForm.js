@@ -40,7 +40,6 @@ function PostForm() {
   }, [text, imagePaths]);
 
   const onChangeImages = useCallback((e) => {
-    console.log('images', e.target.files);
     // multipart로 처리
     const imageFormData = new FormData();
     // 유사객체이기 때문에 forEach를 빌려 쓰는 것

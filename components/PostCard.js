@@ -1,6 +1,7 @@
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
+import moment from 'moment';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -24,6 +25,8 @@ import {
 
 const { Meta } = Card;
 const { Group } = Button;
+
+moment.locale();
 function PostCard({ post }) {
   // dummy data
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -121,6 +124,9 @@ function PostCard({ post }) {
               )
             }
           >
+            <div style={{ float: 'right' }}>
+              {moment(post.createdAt).format('MM.DD.YYYY')}
+            </div>
             <Meta
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
@@ -134,17 +140,22 @@ function PostCard({ post }) {
             />
           </Card>
         ) : (
-          <Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`}>
-                <a>
-                  <Avatar>{post.User.nickname[0]}</Avatar>
-                </a>
-              </Link>
-            }
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: 'right' }}>
+              {moment(post.createdAt).format('MM.DD.YYYY')}
+            </div>
+            <Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <a>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (

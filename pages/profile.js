@@ -23,7 +23,7 @@ function Profile() {
     fetcher
   );
   const { data: followingsData, error: followingError } = useSWR(
-    `http://localhost:3065/user/followers?limit=${followingsLimit}`,
+    `http://localhost:3065/user/followings?limit=${followingsLimit}`,
     fetcher
   );
 

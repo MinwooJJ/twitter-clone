@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "next build"
   },
   "author": "Minwoo Jung",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "babel-plugin-styled-components": "^1.13.1",
     "faker": "^5.5.3",
     "immer": "^9.0.3",
+    "moment": "^2.29.1",
     "next": "^10.2.3",
     "next-redux-wrapper": "^7.0.0",
     "prop-types": "^15.7.2",
