@@ -1,4 +1,5 @@
-import produce from 'immer';
+import produce from '../util/produce';
+
 import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,

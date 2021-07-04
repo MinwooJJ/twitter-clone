@@ -1,4 +1,5 @@
-import produce from 'immer';
+import produce from '../util/produce';
+
 import {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
