@@ -95,7 +95,7 @@ function PostCard({ post }) {
               <Group>
                 {id && post.User.id === id ? (
                   <>
-                    <Button>Edit</Button>
+                    {!post.RetweetId && <Button>Edit</Button>}
                     <Button
                       type="danger"
                       onClick={onRemovePost}
