@@ -20,7 +20,7 @@
   "extends": ["airbnb"],
   "plugins": ["prettier", "import", "react-hooks"],
   "rules": {
-    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-associated-control": "'off'",
     "jsx-a11y/anchor-is-valid": "off",
     "react/jsx-wrap-multilines": "off",
     "no-console": "off",
@@ -35,6 +35,7 @@
     "no-param-reassign": "off",
     "implicit-arrow-linebreak": "off",
     "consistent-return": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "no-multi-assign": "off"
   }
 }
