@@ -47,10 +47,10 @@ const Profile = () => {
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-  store.dispatch(loadUserRequestAction(2));
-  store.dispatch(END);
-  await store.sagaTask.toPromise();
-});
+// export const getStaticProps = wrapper.getStaticProps((store) => async () => {
+//   store.dispatch(loadUserRequestAction(2));
+//   store.dispatch(END);
+//   await store.sagaTask.toPromise();
+// });
 
 export default Profile;
