@@ -10,7 +10,7 @@ import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 import wrapper from '../store/configureStore';
 import { loadMyInfoRequestAction } from '../reducers/user';
-import backUrl from '../config/config';
+import { backUrl } from '../config/config';
 
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((response) => response.data);

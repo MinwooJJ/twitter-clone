@@ -7,7 +7,7 @@ import {
   removeImageAction,
   uploadImagesRequestAction,
 } from '../reducers/post';
-import backUrl from '../config/config';
+import { backUrl } from '../config/config';
 
 const TextArea = Input;
 
