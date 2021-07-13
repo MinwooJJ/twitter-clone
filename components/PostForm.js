@@ -7,6 +7,7 @@ import {
   removeImageAction,
   uploadImagesRequestAction,
 } from '../reducers/post';
+import backUrl from '../config/config';
 
 const TextArea = Input;
 
@@ -96,11 +97,7 @@ function PostForm() {
       <div>
         {imagePaths.map((v, i) => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img
-              src={`http://localhost:3065/${v}`}
-              style={{ width: '200px' }}
-              alt={v}
-            />
+            <img src={`${backUrl}/${v}`} style={{ width: '200px' }} alt={v} />
             <div>
               <Button onClick={onRemoveImage(i)}>Delete</Button>
             </div>
