@@ -1,1 +1,1 @@
-export const backUrl = 'http://3.12.194.14';
+export const backUrl = 'http://api.minbird.com';
