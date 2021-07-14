@@ -30,10 +30,10 @@ function Profile() {
   );
 
   useEffect(() => {
-    if (!me?.id) {
+    if (!(me && me.id)) {
       Router.push('/');
     }
-  }, [me?.id]);
+  }, [me && me.id]);
 
   const loadMoreFollowings = useCallback(() => {
     setFollowingsLimit((prev) => prev + 3);
