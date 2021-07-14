@@ -98,19 +98,18 @@ const User = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, res, params }) => {
-      const cookie = req?.headers.cookie;
-      axios.defaults.headers.Cookie = '';
-      if (req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
-      }
-      store.dispatch(loadUserPostsRequestAction(params.id));
-      store.dispatch(loadUserRequestAction(params.id));
-      store.dispatch(loadMyInfoRequestAction(params.id));
-      store.dispatch(END);
-      await store.sagaTask.toPromise();
+  async (context) => {
+    const cookie = context.req?.headers.cookie;
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
+    context.store.dispatch(loadUserPostsRequestAction(context.params.id));
+    context.store.dispatch(loadUserRequestAction(context.params.id));
+    context.store.dispatch(loadMyInfoRequestAction(context.params.id));
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
 );
 
 export default User;

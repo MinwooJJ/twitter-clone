@@ -51,19 +51,18 @@ const Hashtag = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, res, params }) => {
-      const cookie = req?.headers.cookie;
-      axios.defaults.headers.Cookie = '';
-      if (req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
-      }
-      store.dispatch(loadMyInfoRequestAction());
-      store.dispatch(loadHashtagPostsRequestAction(params.tag));
-      store.dispatch(END);
-      await store.sagaTask.toPromise();
-      return { props: {} };
+  async (context) => {
+    const cookie = context.req?.headers.cookie;
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
+    context.store.dispatch(loadMyInfoRequestAction());
+    context.store.dispatch(loadHashtagPostsRequestAction(context.params.tag));
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+    return { props: {} };
+  }
 );
 
 export default Hashtag;
