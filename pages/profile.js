@@ -16,9 +16,10 @@ const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((response) => response.data);
 
 function Profile() {
+  const { me } = useSelector((state) => state.user);
   const [followersLimit, setFollowersLimit] = useState(3);
   const [followingsLimit, setFollowingsLimit] = useState(3);
-  const { me } = useSelector((state) => state.user);
+
   const { data: followersData, error: followerError } = useSWR(
     `${backUrl}/user/followers?limit=${followersLimit}`,
     fetcher
@@ -76,20 +77,19 @@ function Profile() {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      console.log('getServerSideProps start');
-      const cookie = req?.headers.cookie;
-      axios.defaults.headers.Cookie = '';
-      if (req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
-      }
-
-      store.dispatch(loadMyInfoRequestAction());
-      store.dispatch(END);
-      console.log('getServerSideProps end');
-      await store.sagaTask.toPromise();
+  async (context) => {
+    console.log('Profile: getServerSideProps start');
+    const cookie = context.req?.headers.cookie;
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
+
+    context.store.dispatch(loadMyInfoRequestAction());
+    context.store.dispatch(END);
+    console.log('Profile: getServerSideProps end');
+    await context.store.sagaTask.toPromise();
+  }
 );
 
 export default Profile;

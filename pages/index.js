@@ -50,24 +50,23 @@ function Home() {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      console.log('getServerSideProps start');
-      // *** 중요 ***
-      const cookie = req?.headers.cookie;
-      axios.defaults.headers.Cookie = '';
-      if (req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
-      }
-
-      // 새로고침시 로그인 유지를 위한 dispatch
-      store.dispatch(loadMyInfoRequestAction());
-      store.dispatch(loadPostsRequestAction());
-
-      store.dispatch(END);
-      console.log('getServerSideProps end');
-      await store.sagaTask.toPromise();
+  async (context) => {
+    console.log('Home: getServerSideProps start');
+    // *** 중요 ***
+    const cookie = context.req?.headers.cookie;
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
+
+    // 새로고침시 로그인 유지를 위한 dispatch
+    context.store.dispatch(loadMyInfoRequestAction());
+    context.store.dispatch(loadPostsRequestAction());
+
+    context.store.dispatch(END);
+    console.log('Home: getServerSideProps end');
+    await context.store.sagaTask.toPromise();
+  }
 );
 
 export default Home;

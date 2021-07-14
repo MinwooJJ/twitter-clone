@@ -149,20 +149,19 @@ function Signup() {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      console.log('getServerSideProps start');
-      const cookie = req?.headers.cookie;
-      axios.defaults.headers.Cookie = '';
-      if (req && cookie) {
-        axios.defaults.headers.Cookie = cookie;
-      }
-
-      store.dispatch(loadMyInfoRequestAction());
-      store.dispatch(END);
-      console.log('getServerSideProps end');
-      await store.sagaTask.toPromise();
+  async (context) => {
+    console.log('Signup: getServerSideProps start');
+    const cookie = context.req?.headers.cookie;
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
     }
+
+    context.store.dispatch(loadMyInfoRequestAction());
+    context.store.dispatch(END);
+    console.log('Signup: getServerSideProps end');
+    await context.store.sagaTask.toPromise();
+  }
 );
 
 export default Signup;

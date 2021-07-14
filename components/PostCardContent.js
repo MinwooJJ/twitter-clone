@@ -18,7 +18,6 @@ function PostCardContent({
   );
 
   useEffect(() => {
-    console.log('PostCardContent Rendering!!');
     if (updatePostDone) {
       onCancelUpdatePost();
     }

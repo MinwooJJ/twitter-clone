@@ -62,11 +62,6 @@ function AppLayout({ children }) {
             onSearch={onSearch}
           />
         </Item>
-        <Item key="signup">
-          <Link href="/signup">
-            <a>SignUp</a>
-          </Link>
-        </Item>
       </Menu>
       <Row gutter={8} style={{ paddingTop: '46px' }}>
         <Col xs={24} md={6}>

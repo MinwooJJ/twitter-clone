@@ -43,7 +43,7 @@ const Post = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, res, params }) => {
-      console.log('getServerSideProps start');
+      console.log('Dynamic Post: getServerSideProps start');
       const cookie = req?.headers.cookie;
       axios.defaults.headers.Cookie = '';
       if (req && cookie) {
@@ -53,7 +53,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       store.dispatch(loadMyInfoRequestAction());
       store.dispatch(loadPostRequestAction(params.id));
       store.dispatch(END);
-      console.log('getServerSideProps end');
+      console.log('Dynamic Post: getServerSideProps end');
       await store.sagaTask.toPromise();
     }
 );
